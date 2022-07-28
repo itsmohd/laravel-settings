@@ -1,0 +1,58 @@
+{
+    "name": "smartisan/settings",
+    "description": "App & Models Settings for Laravel",
+    "keywords": [
+        "laravel-settings"
+    ],
+    "homepage": "https://github.com/iamohd/settings",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mohammed Isa",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "ext-json": "*",
+        "illuminate/database": "^9.0",
+        "illuminate/support": "^9.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.4",
+        "orchestra/testbench": "^7.0",
+        "phpunit/phpunit": "^9.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Smartisan\\Settings\\": "src"
+        },
+        "files": [
+            "src/Support/settings.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Smartisan\\Settings\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Smartisan\\Settings\\SettingsServiceProvider"
+            ],
+            "aliases": {
+                "Settings": "Smartisan\\Settings\\Facades\\Settings"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
