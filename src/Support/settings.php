@@ -1,12 +1,12 @@
 <?php
 
+use Smartisan\Settings\Settings;
+
 if (! function_exists('settings')) {
     /**
      * Get a settings manager instance.
-     *
-     * @return \Smartisan\Settings\Settings
      */
-    function settings()
+    function settings(): Settings
     {
         return app('settings');
     }

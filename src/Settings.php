@@ -2,36 +2,32 @@
 
 namespace Smartisan\Settings;
 
+use Illuminate\Contracts\Cache\Repository as CacheRepository;
+use Illuminate\Database\Eloquent\Model;
+use Smartisan\Settings\Contracts\Repository;
 use Smartisan\Settings\Exceptions\CastHandlerException;
 
 class Settings
 {
     /**
      * Settings repository instance.
-     *
-     * @var \Smartisan\Settings\Contracts\Repository
      */
-    protected $repository;
+    protected Repository $repository;
 
     /**
      * Application cache repository instance.
-     *
-     * @var \Illuminate\Contracts\Cache\Repository
      */
-    protected $cache;
+    protected CacheRepository $cache;
 
     /**
-     * @var \Smartisan\Settings\EntryFilter
+     * Settings entry filter instance.
      */
-    protected $filter;
+    protected EntryFilter $filter;
 
     /**
      * Create a new settings manager instance.
-     *
-     * @param \Smartisan\Settings\Contracts\Repository $repository
-     * @param \Illuminate\Contracts\Cache\Repository $cache
      */
-    public function __construct($repository, $cache)
+    public function __construct(Repository $repository, CacheRepository $cache)
     {
         $this->repository = $repository;
 
@@ -43,12 +39,8 @@ class Settings
     /**
      * Store settings entry for the given key.
      * The configured values of entry filter will be used to filter the settings entries.
-     *
-     * @param string|array $key
-     * @param mixed $value
-     * @return void
      */
-    public function set($key, $value = null)
+    public function set(string|array $key, mixed $value = null): void
     {
         $this->forgetCacheIfEnabled($key);
 
@@ -62,12 +54,8 @@ class Settings
     /**
      * Retrieve settings entry for the given key.
      * The configured values of entry filter will be used to filter the settings entries.
-     *
-     * @param string|array $key
-     * @param mixed $default
-     * @return mixed
      */
-    public function get($key, $default = null)
+    public function get(string|array $key, mixed $default = null): mixed
     {
         if (config('settings.cache.enabled')) {
             return $this->cache->rememberForever($this->resolveCacheKey($key), function () use ($key, $default) {
@@ -80,11 +68,8 @@ class Settings
 
     /**
      * Destroy the settings entry for the given key.
-     *
-     * @param string|array $key
-     * @return void
      */
-    public function forget($key)
+    public function forget(string|array $key): void
     {
         $this->forgetCacheIfEnabled($key);
 
@@ -98,10 +83,8 @@ class Settings
     /**
      * Retrieve all settings entry.
      * The configured values of entry filter will be used to filter the settings entries.
-     *
-     * @return array
      */
-    public function all()
+    public function all(): array
     {
         if (config('settings.cache.enabled')) {
             return $this->cache->rememberForever($this->resolveCacheKey(null), function () {
@@ -114,11 +97,8 @@ class Settings
 
     /**
      * Determines whether the given settings entry exists or not.
-     *
-     * @param string $key
-     * @return bool
      */
-    public function exists($key)
+    public function exists(string $key): bool
     {
         $entry = $this->get($key);
 
@@ -127,11 +107,8 @@ class Settings
 
     /**
      * Set the model owner of the settings entry.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @return \Smartisan\Settings\Settings
      */
-    public function for($model)
+    public function for(Model $model): Settings
     {
         $this->filter->setModel($model);
 
@@ -140,11 +117,8 @@ class Settings
 
     /**
      * Set the group name of the settings entry.
-     *
-     * @param string $name
-     * @return \Smartisan\Settings\Settings
      */
-    public function group($name)
+    public function group(string $name): Settings
     {
         $this->filter->setGroup($name);
 
@@ -153,11 +127,8 @@ class Settings
 
     /**
      * Set the exempted settings entries.
-     *
-     * @param string|array $excepts
-     * @return \Smartisan\Settings\Settings
      */
-    public function except(...$excepts)
+    public function except(string|array ...$excepts): Settings
     {
         $this->filter->setExcepts(...$excepts);
 
@@ -166,11 +137,8 @@ class Settings
 
     /**
      * Resolve settings entry caching key.
-     *
-     * @param string|array|null $keys
-     * @return string
      */
-    public function resolveCacheKey($keys)
+    public function resolveCacheKey(string|null|array $keys): string
     {
         $prefix = config('settings.cache.prefix');
 
@@ -187,12 +155,8 @@ class Settings
 
     /**
      * Retrieve the evalulated settings entries for the given key.
-     *
-     * @param string|array $key
-     * @param mixed $default
-     * @return mixed
      */
-    protected function getEntries($key, $default)
+    protected function getEntries(string|array $key, mixed $default): mixed
     {
         $payload = $this->repository
             ->withFilter($this->filter)
@@ -207,10 +171,8 @@ class Settings
 
     /**
      * Retrieve all settings entries.
-     *
-     * @return array
      */
-    protected function getAllEntries()
+    protected function getAllEntries(): array
     {
         $payload = $this->repository
             ->withFilter($this->filter)
@@ -225,11 +187,8 @@ class Settings
 
     /**
      * Clear the given caching key values.
-     *
-     * @param string $key
-     * @return void
      */
-    protected function forgetCacheIfEnabled($key)
+    protected function forgetCacheIfEnabled(string|array $key): void
     {
         if (config('settings.cache.enabled')) {
             $cacheKey = $this->resolveCacheKey(is_array($key) ? array_keys($key) : $key);
@@ -242,11 +201,8 @@ class Settings
 
     /**
      * Evaluate the payload and strip additional attributes.
-     *
-     * @param mixed $payload
-     * @return array
      */
-    protected function stripSettingsPayload(&$payload)
+    protected function stripSettingsPayload(string|null|array &$payload)
     {
         if (is_array($payload)) {
             if (array_key_exists('$value', $payload) && array_key_exists('$cast', $payload)) {

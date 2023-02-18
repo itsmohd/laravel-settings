@@ -13,7 +13,7 @@ class AnotherCast implements Castable
         $this->param = $param;
     }
 
-    public function set($payload)
+    public function set(mixed $payload): string
     {
         if ($this->param === 't1') {
             return 'v1';
@@ -22,7 +22,7 @@ class AnotherCast implements Castable
         return 'v2';
     }
 
-    public function get($payload)
+    public function get(mixed $payload): string
     {
         if ($this->param === 't1') {
             return 'evaluated 1';

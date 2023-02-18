@@ -6,12 +6,12 @@ use Smartisan\Settings\Contracts\Castable;
 
 class DummyCast implements Castable
 {
-    public function set($payload)
+    public function set(mixed $payload): string
     {
         return 'dummy value';
     }
 
-    public function get($payload)
+    public function get(mixed $payload): string
     {
         return 'dummy value';
     }

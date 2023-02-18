@@ -10,10 +10,9 @@ class CarbonPeriodCast implements Castable
     /**
      * Apply casting rules when storing the payload into the settings repository.
      *
-     * @param \Carbon\CarbonPeriod $payload
-     * @return array
+     * @param  \Carbon\CarbonPeriod  $payload
      */
-    public function set($payload)
+    public function set(mixed $payload): array
     {
         return [
             'start' => $payload->getStartDate(),
@@ -24,10 +23,9 @@ class CarbonPeriodCast implements Castable
     /**
      * Apply casting rules when storing the payload into the settings repository.
      *
-     * @param array $payload
-     * @return \Carbon\CarbonPeriod
+     * @param  array  $payload
      */
-    public function get($payload)
+    public function get(mixed $payload): CarbonPeriod
     {
         return new CarbonPeriod(
             $payload['start'],

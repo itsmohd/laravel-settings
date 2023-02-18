@@ -10,11 +10,8 @@ class CastHandler
 {
     /**
      * Evaluate all casts on the given payload and return the new modified payload.
-     *
-     * @param mixed $payload
-     * @return array
      */
-    public function handle($payload)
+    public function handle(mixed $payload): array
     {
         if (is_array($payload)) {
             $entries = $payload;
@@ -31,11 +28,8 @@ class CastHandler
 
     /**
      * Determine the appropiate cast to the given payload value.
-     *
-     * @param mixed $payload
-     * @return array
      */
-    protected function applyCast($payload)
+    protected function applyCast(mixed $payload): array
     {
         $cast = $this->resolveCast($payload);
 
@@ -67,11 +61,8 @@ class CastHandler
 
     /**
      * Resolve the corresponding cast of the given payload data type.
-     *
-     * @param mixed $payload
-     * @return object
      */
-    protected function resolveCast($payload)
+    protected function resolveCast(mixed $payload): object
     {
         $casts = config('settings.casts');
 

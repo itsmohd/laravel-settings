@@ -6,10 +6,8 @@ class ModelTypeException extends \Exception
 {
     /**
      * Create invalid model type exception instance.
-     *
-     * @return \Smartisan\Settings\Exceptions\ModelTypeException
      */
-    public static function invalid()
+    public static function invalid(): ModelTypeException
     {
         return new self('Invalid model type is passed, it should be of type Illuminate\Database\Eloquent\Model');
     }

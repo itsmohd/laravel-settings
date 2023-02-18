@@ -11,29 +11,21 @@ class DatabaseRepository extends Repository
 {
     /**
      * The database connection.
-     *
-     * @var string
      */
-    protected $connection;
+    protected string|null $connection;
 
     /**
      * The database table name.
-     *
-     * @var string
      */
-    protected $table;
+    protected string|null $table;
 
     /**
      * Entries cast handler instance.
-     *
-     * @var \Smartisan\Settings\CastHandler
      */
-    protected $castHandler;
+    protected CastHandler $castHandler;
 
     /**
      * Create a new database repository instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -47,12 +39,8 @@ class DatabaseRepository extends Repository
     /**
      * Retrieve settings entry for the given key.
      * The configured values of entry filter will be used to filter the settings entries.
-     *
-     * @param string|array $key
-     * @param mixed $default
-     * @return mixed
      */
-    public function get($key, $default = null)
+    public function get(string|array $key, mixed $default = null): mixed
     {
         $entries = $this->getEntries($key, $default);
 
@@ -70,12 +58,8 @@ class DatabaseRepository extends Repository
     /**
      * Store settings entry for the given key.
      * The configured values of entry filter will be used to filter the settings entries.
-     *
-     * @param string|array $key
-     * @param mixed $value
-     * @return void
      */
-    public function set($key, $value = null)
+    public function set(string|array $key, mixed $value = null): void
     {
         if (is_array($key)) {
             collect($key)->each(function ($value, $key) {
@@ -90,11 +74,8 @@ class DatabaseRepository extends Repository
 
     /**
      * Destroy the settings entry for the given key.
-     *
-     * @param string|array $key
-     * @return void
      */
-    public function forget($key)
+    public function forget(string|array $key): void
     {
         $key = collect($key);
 
@@ -118,22 +99,16 @@ class DatabaseRepository extends Repository
     /**
      * Retrieve all settings entry.
      * The configured values of entry filter will be used to filter the settings entries.
-     *
-     * @return array
      */
-    public function all()
+    public function all(): array
     {
         return $this->getEntries(null, null)->toArray();
     }
 
     /**
      * Retrieve the evalulated settings entries for the given key.
-     *
-     * @param string|array $keys
-     * @param mixed $default
-     * @return \Illuminate\Support\Collection
      */
-    protected function getEntries($keys, $default)
+    protected function getEntries(string|null|array $keys, mixed $default): Collection
     {
         $keys = collect($keys);
 
@@ -182,12 +157,8 @@ class DatabaseRepository extends Repository
 
     /**
      * Update the given settings entry or insert when it does not exist.
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return bool
      */
-    protected function updateOrInsertSettingsEntry($key, $value)
+    protected function updateOrInsertSettingsEntry(string $key, mixed $value): bool
     {
         return DB::connection($this->connection)
             ->table($this->table)

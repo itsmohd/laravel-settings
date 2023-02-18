@@ -3,23 +3,19 @@
 namespace Smartisan\Settings\Repositories;
 
 use Smartisan\Settings\Contracts\Repository as RepositoryContract;
+use Smartisan\Settings\EntryFilter;
 
 abstract class Repository implements RepositoryContract
 {
     /**
      * Settings filter instance.
-     *
-     * @var \Smartisan\Settings\EntryFilter
      */
-    protected $entryFilter;
+    protected EntryFilter $entryFilter;
 
     /**
      * Set settings filter.
-     *
-     * @param \Smartisan\Settings\EntryFilter $filter
-     * @return \Smartisan\Settings\Repositories\Repository $this
      */
-    public function withFilter($filter)
+    public function withFilter(EntryFilter $filter): Repository
     {
         $this->entryFilter = $filter;
 

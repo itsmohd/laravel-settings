@@ -31,7 +31,7 @@ class EntryFilter
     /**
      * Set the model owner of the settings entry.
      *
-     * @param mixed $model
+     * @param  mixed  $model
      * @return \Smartisan\Settings\EntryFilter $this
      */
     public function setModel($model)
@@ -48,7 +48,7 @@ class EntryFilter
     /**
      * Set the group name of the settings entry.
      *
-     * @param string $group
+     * @param  string  $group
      * @return \Smartisan\Settings\EntryFilter $this
      */
     public function setGroup($group)
@@ -61,7 +61,7 @@ class EntryFilter
     /**
      * Set the exempted settings entries.
      *
-     * @param string|array $excepts
+     * @param  string|array  $excepts
      * @return \Smartisan\Settings\EntryFilter $this
      */
     public function setExcepts(...$excepts)

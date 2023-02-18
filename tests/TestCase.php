@@ -42,8 +42,8 @@ class TestCase extends Orchestra
 
     protected function setupDatabase()
     {
-        $settingsMigration = include __DIR__ . '/../database/migrations/create_settings_table.php.stub';
-        $usersMigration = include __DIR__ . '/Migrations/create_users_table.php';
+        $settingsMigration = include __DIR__.'/../database/migrations/create_settings_table.php.stub';
+        $usersMigration = include __DIR__.'/Migrations/create_users_table.php';
 
         $settingsMigration->up();
         $usersMigration->up();

@@ -6,17 +6,11 @@ interface Castable
 {
     /**
      * Apply casting rules when storing the payload into the settings repository.
-     *
-     * @param mixed $payload
-     * @return mixed
      */
-    public function set($payload);
+    public function set(mixed $payload): mixed;
 
     /**
      * Apply casting rules when retrieving the payload from the settings repository.
-     *
-     * @param mixed $payload
-     * @return mixed
      */
-    public function get($payload);
+    public function get(mixed $payload): mixed;
 }

@@ -107,7 +107,7 @@ class SettingsTest extends TestCase
 
         $this->assertSame(
             [
-            'k1' => 'v1', 'k2' => 'v2', 'k3' => 'default value', 'k4' => 'default value', ],
+                'k1' => 'v1', 'k2' => 'v2', 'k3' => 'default value', 'k4' => 'default value', ],
             Settings::get(['k1', 'k2', 'k3', 'k4'], 'default value')
         );
     }

@@ -10,10 +10,9 @@ class CarbonCast implements Castable
     /**
      * Apply casting rules when storing the payload into the settings repository.
      *
-     * @param \Carbon\Carbon $payload
-     * @return string
+     * @param  Carbon  $payload
      */
-    public function set($payload)
+    public function set(mixed $payload): string
     {
         return $payload->format(DATE_ATOM);
     }
@@ -21,10 +20,9 @@ class CarbonCast implements Castable
     /**
      * Apply casting rules when retrieving the payload from the settings repository.
      *
-     * @param string $payload
-     * @return \Carbon\Carbon
+     * @param  string  $payload
      */
-    public function get($payload)
+    public function get(mixed $payload): Carbon
     {
         return new Carbon($payload);
     }
