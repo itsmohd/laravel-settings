@@ -2,7 +2,11 @@
 
 namespace Smartisan\Settings\Repositories;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Smartisan\Settings\CastHandler;
@@ -86,7 +90,7 @@ class DatabaseRepository extends Repository
             ->whereIn('key', $key->toArray())
             ->where(function (Builder $builder) use ($model) {
                 if ($model) {
-                    return $builder->where('settingable_type', get_class($model))
+                    return $builder->where('settingable_type', $this->determineModelMorphMapName())
                         ->where('settingable_id', $model->getKey());
                 }
 
@@ -129,7 +133,7 @@ class DatabaseRepository extends Repository
             ->where('group', $group)
             ->where(function (Builder $builder) use ($model) {
                 if ($model) {
-                    return $builder->where('settingable_type', get_class($model))
+                    return $builder->where('settingable_type', $this->determineModelMorphMapName())
                         ->where('settingable_id', $model->getKey());
                 }
 
@@ -165,12 +169,31 @@ class DatabaseRepository extends Repository
             ->updateOrInsert([
                 'key' => $key,
                 'group' => $this->entryFilter->getGroup(),
-                'settingable_type' => $this->entryFilter->getModel() ? get_class($this->entryFilter->getModel()) : null,
+                'settingable_type' => $this->entryFilter->getModel() ? $this->determineModelMorphMapName() : null,
                 'settingable_id' => $this->entryFilter->getModel() ? $this->entryFilter->getModel()->getKey() : null,
             ], [
                 'payload' => json_encode($this->castHandler->handle($value)),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+    }
+
+    /**
+     * Determine the model morph map name if exists, otherwise get model class name.
+     */
+    private function determineModelMorphMapName(): ?string
+    {
+        $morphMapName = collect(Relation::$morphMap)
+            ->filter(function ($v) {
+                return $v === get_class($this->entryFilter->getModel());
+            })
+            ->keys()
+            ->first();
+
+        if (! $morphMapName) {
+            $morphMapName = get_class($this->entryFilter->getModel());
+        }
+
+        return $morphMapName;
     }
 }
