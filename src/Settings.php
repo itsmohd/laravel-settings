@@ -150,7 +150,7 @@ class Settings
 
         $excepts = implode(',', $this->filter->getExcepts());
 
-        return "${prefix}settings.keys=${keys}&group=${group}&excepts=${excepts}&for=$for";
+        return "{$prefix}settings.keys={$keys}&group={$group}&excepts={$excepts}&for={$for}";
     }
 
     /**
